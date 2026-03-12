@@ -105,4 +105,4 @@ This project is for personal use and development.
 
 ---
 
-Developed with ❤️ by **Usama**
+Developed with ❤️ by **Usama Masood**

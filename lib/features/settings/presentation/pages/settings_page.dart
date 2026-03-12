@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:app_settings/app_settings.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/theme/theme_cubit.dart';
 import '../../../shop/presentation/bloc/shop_bloc.dart';
 import '../bloc/printer_bloc.dart';
 import '../bloc/printer_event.dart';
@@ -26,6 +27,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeCubit>().state == ThemeMode.dark;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings',
@@ -45,7 +48,7 @@ class _SettingsPageState extends State<SettingsPage> {
             // Profile Section
             Container(
               width: double.infinity,
-              color: Colors.white,
+              color: Theme.of(context).cardColor, // Background fixed to theme card color
               padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
               child: BlocBuilder<ShopBloc, ShopState>(
                 builder: (context, state) {
@@ -93,6 +96,26 @@ class _SettingsPageState extends State<SettingsPage> {
                   );
                 },
               ),
+            ),
+
+            const SizedBox(height: 24),
+
+            _buildSectionHeader('Appearance'),
+            _buildListGroup(
+              children: [
+                _buildListItem(
+                  icon: isDark ? Icons.dark_mode : Icons.light_mode,
+                  title: 'Dark Mode',
+                  subtitle: 'Enable or disable dark theme',
+                  trailingWidget: Switch(
+                    value: isDark,
+                    activeThumbColor: AppTheme.primaryColor,
+                    onChanged: (bool value) {
+                      context.read<ThemeCubit>().toggleTheme(value);
+                    },
+                  ),
+                ),
+              ],
             ),
 
             const SizedBox(height: 24),
@@ -241,16 +264,16 @@ class _SettingsPageState extends State<SettingsPage> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[100]!),
+        border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.1)),
       ),
       child: Column(children: children),
     );
   }
 
   Widget _buildDivider() {
-    return Divider(height: 1, thickness: 1, color: Colors.grey[50], indent: 64);
+    return Divider(height: 1, thickness: 1, color: Theme.of(context).dividerColor.withValues(alpha: 0.1), indent: 64);
   }
 
   Widget _buildListItem({

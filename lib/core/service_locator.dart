@@ -1,4 +1,9 @@
+// Core Imports
+import 'package:bill_wiz/core/theme/theme_cubit.dart';
+import 'package:bill_wiz/features/dashboard/data/repositories/dashboard_repository_impl.dart';
+import 'package:bill_wiz/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:get_it/get_it.dart';
+// Feature Imports
 import '../../features/product/data/repositories/product_repository_impl.dart';
 import '../../features/product/domain/repositories/product_repository.dart';
 import '../../features/product/domain/usecases/product_usecases.dart';
@@ -14,7 +19,17 @@ import '../../features/settings/presentation/bloc/printer_bloc.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  // Features - Product
+  // --- Core ---
+  sl.registerLazySingleton(() => ThemeCubit());
+
+  // --- Features - Product ---
+
+  sl.registerFactory(() => DashboardBloc);
+  // Repositories
+sl.registerLazySingleton<DashboardRepository>(() => DashboardRepository());
+
+// Blocs
+sl.registerFactory(() => DashboardBloc(sl<DashboardRepository>()));
   // Bloc
   sl.registerFactory(
     () => ProductBloc(
@@ -50,7 +65,7 @@ Future<void> init() async {
     () => ProductRepositoryImpl(),
   );
 
-  // Features - Shop
+  // --- Features - Shop ---
   // Use cases
   sl.registerLazySingleton(() => GetShopUseCase(sl()));
   sl.registerLazySingleton(() => UpdateShopUseCase(sl()));
@@ -60,7 +75,7 @@ Future<void> init() async {
     () => ShopRepositoryImpl(),
   );
 
-  // Features - Settings / Printer
+  // --- Features - Settings / Printer ---
   sl.registerLazySingleton<PrinterRepository>(
     () => PrinterRepositoryImpl(),
   );
