@@ -59,20 +59,20 @@ Installation
 Clone the repository:
 
 Bash
-git clone [https://github.com/usama-devv/bill_wiz.git](https://github.com/usama-devv/bill_wiz.git)
+```git clone [https://github.com/usama-devv/bill_wiz.git](https://github.com/usama-devv/bill_wiz.git)```
 cd bill_wiz
 Install dependencies:
 
 Bash
-flutter pub get
+```flutter pub get```
 Run Code Generation (for Hive & Models):
 
 Bash
-flutter pub run build_runner build --delete-conflicting-outputs
+```flutter pub run build_runner build --delete-conflicting-outputs```
 Run the App:
 
 Bash
-flutter run
+```flutter run```
 📜 Permissions Required
 Camera: For scanning barcodes.
 
